@@ -19,4 +19,6 @@ from main import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', views.SummarizeData.as_view()),
+    path('mom/', views.MOM),
+    path('summarize/', views.summarize),
 ]
