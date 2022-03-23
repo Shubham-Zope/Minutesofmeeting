@@ -1,12 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;900&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Montserrat:wght@100;300;400;500;700&family=Poppins:wght@400;500;600;900&display=swap");
 body {
   margin: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   display: flex;
   justify-content: center;
   font-family: poppins;
+  /* font-weight: 400; */
 }
 .container {
   position: relative;
@@ -17,12 +17,15 @@ body {
   box-sizing: border-box;
   background: #ecf0f3;
   box-shadow: 14px 14px 20px #cbced1, -14px -14px 20px white;
+  background-color: #faedc6;
+  margin: 50px auto 50px auto;
 }
 
 .brand-logo {
   height: 90px;
   width: 100px;
   background: url("loki.png");
+  background-color: #3e8e7e;
   margin: auto;
   border-radius: 50%;
   box-sizing: border-box;
@@ -33,7 +36,7 @@ body {
   margin-top: 10px;
   font-weight: 900;
   font-size: 1.8rem;
-  color: #06ff00;
+  color: #3e8e7e;
   letter-spacing: 1px;
 }
 
@@ -46,16 +49,19 @@ label,
 input,
 button,
 textarea {
+  color: #3e8e7e;
   display: block;
   width: 100%;
   padding: 0;
   border: none;
   outline: none;
   box-sizing: border-box;
+  margin: 20px 0 5px 0;
 }
 
 label {
   margin-bottom: 4px;
+  font-weight: 600;
 }
 
 label:nth-of-type(2) {
@@ -69,21 +75,24 @@ input::placeholder {
 input,
 textarea {
   background: #ecf0f3;
+  color: #3e8e7e;
   padding: 10px;
   padding-left: 25px;
   padding-right: 25px;
   height: 50px;
   font-size: 14px;
-  border-radius: 50px;
+  border-radius: 15px;
   box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white;
 }
 
 button {
   color: black;
   margin-top: 20px;
-  background: #06ff00;
+  background: #3e8e7e;
+  color: #faedc6;
+
   height: 40px;
-  border-radius: 20px;
+  border-radius: 10px;
   cursor: pointer;
   font-weight: 300;
   box-shadow: 6px 6px 6px #cbced1, -6px -6px 6px white;
@@ -110,4 +119,17 @@ h1 {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #3e8e7e;
+  border-radius: 5px;
 }

@@ -74,7 +74,11 @@ $("#download").on("click", function () {
       txt = txt + splitText[j];
     }
 
-    var datatxt = { "text": txt };
+    var datatxt = {
+      text: txt,
+      code: output.meet_code,
+      date: today.toLocaleDateString(undefined, options),
+    };
     // var blob = new Blob([txt], { type: "text/plain;charset=utf-8" });
     // saveAs(blob, "temp.txt");
     $.post("http://127.0.0.1:8000/mom/", JSON.stringify(datatxt));

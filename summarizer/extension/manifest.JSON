@@ -1,9 +1,11 @@
 {
   "manifest_version": 2,
-  "name": "X Script",
+  "name": "GistGator",
   "version": "1.0",
   "description": "A google meet supported chrome extension that make notes using Captions",
-
+  "icons": {
+    "128": "loki.png"
+  },
   "background": {
     "scripts": ["event.js"],
     "persistent": false

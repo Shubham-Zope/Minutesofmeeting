@@ -53,11 +53,37 @@
         </div>
         <div class="inputs">
           <label>Meet link</label>
-          <input type="text" placeholder="Meet link" />
+          <input
+            type="text"
+            placeholder="Meet link"
+            id="code"
+            name=""
+            value="{{code}}"
+          />
           <label>Date</label>
-          <input type="date" placeholder="Date of meet link" />
-          <label>Attendes</label>
-          <input type="text" placeholder="Attendes" />
+          <input
+            type="text"
+            placeholder="Date of meet link"
+            id="date"
+            value="{{date}}"
+          />
+          <label>Attendees</label>
+          <textarea
+            name=""
+            placeholder="Attendes"
+            id="attend"
+            class="attendes-input-box"
+            style="
+              min-height: 50px;
+              max-height: 250px;
+              width: 100%;
+              height: auto;
+              overflow-y: scroll;
+            "
+          >
+{{attendees}}</textarea
+          >
+
           <label>Transcript</label>
           <textarea
             name=""
@@ -70,8 +96,11 @@
               overflow-y: scroll;
             "
           >
-{{trans}} </textarea
+{{trans}}</textarea
           >
+
+          <button type="button" onclick="summarize()">Summarize</button>
+
           <label>Summary</label>
           <textarea
             name="summary"
@@ -86,23 +115,145 @@
           >
 {{summary}}</textarea
           >
-          <button type="button" onclick="summarize()">Summarize</button>
-          <button type="button" onclick="windows.print()">Verified</button>
+          <button type="button" onclick="DownloadPdf()">Download MOM</button>
           <button
             type="button"
             onclick="window.location.href='mailto:mail@example.org'"
           >
-            Mail
+            Send Mail
           </button>
         </div>
       </div>
     </div>
   </body>
+  <script src="{% static 'jquery.min.js' %}"></script>
+  <script src="{% static 'jspdf.min.js' %}"></script>
+  <script src="{% static 'imgdata.js' %}"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script>
     function summarize() {
-      var summarytxt = { transcript: document.getElementById("trans").value };
-      $.post("http://127.0.0.1:8000/summarize/", JSON.stringify(summarytxt));
+      var summarytxt = {
+        transcript: document.getElementById("trans").value,
+        date: document.getElementById("date").value,
+        code: document.getElementById("code").value,
+        attendes: document.getElementById("attend").value,
+      };
+      $.post(
+        "http://127.0.0.1:8000/summarize/",
+        JSON.stringify(summarytxt)
+      ).done(function (data) {
+        window.location.replace("http://127.0.0.1:8000/summarize/");
+      });
+      //window.location.href
+    }
+  </script>
+  <script>
+    function DownloadPdf() {
+      const doc = new jsPDF();
+      doc.setFillColor(221, 221, 221);
+      doc.setLineWidth(1.5);
+      doc.rect(0, 0, 220, 60, "F");
+
+      doc.addImage(imgData, "PNG", 10, 5, 50, 50);
+
+      doc.setLineWidth(1);
+      doc.setDrawColor(62, 142, 126);
+      doc.line(10, 60, 200, 60);
+
+      doc.setFontSize(37);
+
+      doc.setFont("helvetica");
+      doc.setFontType("bold");
+      doc.text("Minutes of meeting", 200, 28, "right");
+
+      doc.setFontSize(17);
+      doc.setFont("times");
+      doc.setFontType("italic");
+      var today = new Date();
+      const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      };
+      var width = doc.getTextWidth("options");
+      width = 147 - width;
+      doc.text(document.getElementById("date").value, 200, 38, "right");
+      doc.text(document.getElementById("code").value, 200, 45, "right");
+      doc.setFontSize(20);
+      doc.setFont("times");
+      doc.setFontType("bold");
+      doc.text("Attendees", 15, 70);
+      doc.setFontSize(16);
+      doc.setFont("times");
+      doc.setFontType("normal");
+
+      var y = 130;
+      var splitAttend = doc.splitTextToSize(
+        document.getElementById("attend").value,
+        185
+      );
+      var height = 80;
+      for (var i = 0; i < splitAttend.length; i++) {
+        if (height > 130) {
+          y = y + 10;
+        }
+        // var res = splitAttend[i].split(":");
+
+        // if (res.length > 1) {
+        //   y = y + 5;
+        //   var name = res[0].concat(" :");
+        //   var width = doc.getTextWidth(name);
+        //   var conversation = res[1];
+
+        //   doc.setFontType("bold");
+        //   doc.text(10, y, name);
+        //   doc.setFontType("normal");
+        //   doc.text(15 + width, y, conversation);
+        // } else {
+        //   doc.text(15, y, splitAttend[i]);
+        // }
+        doc.text(15, height, splitAttend[i]);
+        height = height + 7;
+      }
+
+      doc.text(document.getElementById("attend").value, 15, 80);
+      doc.setFontSize(20);
+      doc.setFont("times");
+      doc.setFontType("bold");
+      doc.text("Summary", 15, y - 10);
+      doc.setFontSize(16);
+      doc.setFont("times");
+      doc.setFontType("normal");
+      var splitText = doc.splitTextToSize(
+        document.getElementById("summary").value,
+        185
+      );
+
+      for (var i = 0; i < splitText.length; i++) {
+        if (y > 280) {
+          y = 10;
+          doc.addPage();
+        }
+        // var res = splitText[i].split(":");
+
+        // if (res.length > 1) {
+        //   y = y + 5;
+        //   var name = res[0].concat(" :");
+        //   var width = doc.getTextWidth(name);
+        //   var conversation = res[1];
+
+        //   doc.setFontType("bold");
+        //   doc.text(10, y, name);
+        //   doc.setFontType("normal");
+        //   doc.text(15 + width, y, conversation);
+        // } else {
+        //   doc.text(15, y, splitText[i]);
+        // }
+        doc.text(15, y, splitText[i]);
+        y = y + 7;
+      }
+      doc.save("MOM-" + document.getElementById("code").value + ".pdf");
     }
   </script>
 </html>
