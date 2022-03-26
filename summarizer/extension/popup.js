@@ -6,6 +6,13 @@ chrome.storage.sync.get(["subtitleWarning"], function (result) {
   }
 });
 
+// $("#RefreshCall").on("click", function () {
+//   // chrome.storage.sync.set({
+//   //   script: ["EMPTY"],
+//   //   meet_code: "EMPTY",
+//   // });
+// });
+
 $("#download").on("click", function () {
   chrome.storage.sync.get(["script", "meet_code"], function (output) {
     const doc = new jsPDF();
