@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "GistGator",
   "version": "1.0",
   "description": "A google meet supported chrome extension that make notes using Captions",
@@ -7,10 +7,9 @@
     "128": "loki.png"
   },
   "background": {
-    "scripts": ["event.js"],
-    "persistent": false
+    "service_worker": "event.js"
   },
-  "page_action": {
+  "action": {
     "default_popup": "popup.html"
   },
   "content_scripts": [
@@ -19,10 +18,6 @@
       "js": ["jquery.min.js", "content.js"]
     }
   ],
-  "permissions": [
-    "tabs",
-    "https://meet.google.com/*",
-    "storage",
-    "notifications"
-  ]
+  "permissions": ["tabs", "storage", "notifications"],
+  "host_permissions": ["https://meet.google.com/*"]
 }

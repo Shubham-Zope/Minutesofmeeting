@@ -6,7 +6,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
         currentWindow: true,
       },
       function (tabs) {
-        chrome.pageAction.show(tabs[0].id);
+        chrome.action.show(tabs[0].id);
       }
     );
   }
