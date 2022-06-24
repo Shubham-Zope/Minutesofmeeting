@@ -120,6 +120,7 @@ finalattendes = ''
 def summarize(request):
     if request.method == 'POST':
         # print(request.body)
+        print("Summarizing...")
         txt = json.loads(request.body) 
         global finaltrans
         global finalcode 
@@ -137,14 +138,14 @@ def summarize(request):
         inputs_no_trunc = tokenizer_2(finaltrans, max_length=None, return_tensors='pt', truncation=False)
         # get batches of tokens corresponding to the exact model_max_length
         chunk_start = 0
-        chunk_end = tokenizer_2.model_max_length #if (len(finaltrans.split()) > tokenizer_2.model_max_length) else int(len(finaltrans.split())/3) # == tokenizer_2.model_max_length for Bart
+        chunk_end = tokenizer_2.model_max_length# if (len(finaltrans.split()) > tokenizer_2.model_max_length) else int(len(finaltrans.split())/2) # == tokenizer_2.model_max_length for Bart
         inputs_batch_lst = []
         while chunk_start <= len(inputs_no_trunc['input_ids'][0]):
             inputs_batch = inputs_no_trunc['input_ids'][0][chunk_start:chunk_end]  # get batch of n tokens
             inputs_batch = torch.unsqueeze(inputs_batch, 0)
             inputs_batch_lst.append(inputs_batch)
-            chunk_start += tokenizer_2.model_max_length #if (len(finaltrans.split()) > tokenizer_2.model_max_length) else int(len(finaltrans.split())/3)  # == tokenizer_2.model_max_length for Bart
-            chunk_end += tokenizer_2.model_max_length #if (len(finaltrans.split()) > tokenizer_2.model_max_length) else int(len(finaltrans.split())/3)  # == tokenizer_2.model_max_length for Bart
+            chunk_start += tokenizer_2.model_max_length# if (len(finaltrans.split()) > tokenizer_2.model_max_length) else int(len(finaltrans.split())/2)  # == tokenizer_2.model_max_length for Bart
+            chunk_end += tokenizer_2.model_max_length# if (len(finaltrans.split()) > tokenizer_2.model_max_length) else int(len(finaltrans.split())/2)  # == tokenizer_2.model_max_length for Bart
 
         # generate a summary on each batch
         summary_ids_lst = [model_2.generate(inputs, num_beams=4, max_length=100, early_stopping=True) for inputs in
